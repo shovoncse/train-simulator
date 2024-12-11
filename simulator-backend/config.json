@@ -1,21 +1,20 @@
 {
-    "first_class": {
-      "pwm1": 240,
-      "pwm2": 128,
-      "pwm3": 0,
-      "pwm4": 55
-    },
-    "second_class": {
-      "pwm1": 180,
-      "pwm2": 90,
-      "pwm3": 60,
-      "pwm4": 30
-    },
-    "restaurant": {
-      "pwm1": 100,
-      "pwm2": 200,
-      "pwm3": 150,
-      "pwm4": 100
-    }
+  "first_class": {
+    "pwm1": 240,
+    "pwm2": 128,
+    "pwm3": 0,
+    "pwm4": 55
+  },
+  "second_class": {
+    "pwm1": 180,
+    "pwm2": 90,
+    "pwm3": 60,
+    "pwm4": 30
+  },
+  "restaurant": {
+    "pwm1": 100,
+    "pwm2": 200,
+    "pwm3": 150,
+    "pwm4": 100
   }
-  
+}
