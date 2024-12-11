@@ -58,37 +58,37 @@ function App() {
             {/* Row 1 */}
             <div className="train-row">
               <div className="train-cell ceil" style={{ backgroundColor: `rgba(255, 255, 0, ${lightingLevels.pwm1 / 255})` }}>
-                Ceiling Left
+                PWM1
               </div>
-              <div className="train-cell seat" style={{ backgroundColor: `rgba(255, 165, 0, ${lightingLevels.pwm2 / 255})` }}>
+              <div className="train-cell seat" style={{ backgroundColor: `#ededed` }}>
+                Seat
+              </div>
+              <div className="train-cell seat" style={{ backgroundColor: `#ededed` }}>
                 Seat
               </div>
               <div className="train-cell seat" style={{ backgroundColor: `rgba(255, 165, 0, ${lightingLevels.pwm3 / 255})` }}>
-                Seat
+                PWM3
               </div>
-              <div className="train-cell seat target" style={{ backgroundColor: `rgba(255, 165, 0, ${lightingLevels.pwm4 / 255})` }}>
-                Seat (Target)
-              </div>
-              <div className="train-cell seat" style={{ backgroundColor: `rgba(255, 165, 0, ${lightingLevels.pwm2 / 255})` }}>
+              <div className="train-cell seat" style={{ backgroundColor: `#ededed` }}>
                 Seat
               </div>
             </div>
 
             {/* Row 2 */}
             <div className="train-row">
-              <div className="train-cell ceil" style={{ backgroundColor: `rgba(255, 255, 0, ${lightingLevels.pwm1 / 255})` }}>
-                Ceiling Right
+            <div className="train-cell ceil" style={{ backgroundColor: `rgba(255, 255, 0, ${lightingLevels.pwm2 / 255})` }}>
+                PWM2
               </div>
-              <div className="train-cell seat" style={{ backgroundColor: `rgba(255, 165, 0, ${lightingLevels.pwm3 / 255})` }}>
-                Seat
-              </div>
-              <div className="train-cell seat target" style={{ backgroundColor: `rgba(255, 165, 0, ${lightingLevels.pwm4 / 255})` }}>
-                Seat (Target)
-              </div>
-              <div className="train-cell seat" style={{ backgroundColor: `rgba(255, 165, 0, ${lightingLevels.pwm2 / 255})` }}>
+              <div className="train-cell seat" style={{ backgroundColor: `#ededed` }}>
                 Seat
               </div>
               <div className="train-cell seat" style={{ backgroundColor: `rgba(255, 165, 0, ${lightingLevels.pwm3 / 255})` }}>
+                PWM4
+              </div>
+              <div className="train-cell seat" style={{ backgroundColor: `#ededed` }}>
+                Seat
+              </div>
+              <div className="train-cell seat" style={{ backgroundColor: `#ededed` }}>
                 Seat
               </div>
             </div>
