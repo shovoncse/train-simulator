@@ -99,38 +99,56 @@ function App() {
             {/* Row 1 */}
             <div className="train-row">
               <div className="train-cell ceil" style={{ backgroundColor: `rgba(255, 255, 0, ${lightingLevels.pwm1 / 255})` }}>
-                PWM1
+                PWM 1
               </div>
               <div className="train-cell seat" style={{ backgroundColor: `#ededed` }}>
-                Seat
+                💺
               </div>
               <div className="train-cell seat" style={{ backgroundColor: `#ededed` }}>
-                Seat
+              💺
               </div>
-              <div className="train-cell seat" style={{ backgroundColor: `rgba(255, 165, 0, ${lightingLevels.pwm3 / 255})` }}>
-                PWM3
+              <div className="train-cell seat target" style={{ backgroundColor: `rgba(255, 165, 0, ${lightingLevels.pwm3 / 255})` }}>
+                PWM 3
               </div>
               <div className="train-cell seat" style={{ backgroundColor: `#ededed` }}>
-                Seat
+              💺
+              </div>
+              <div className="train-cell seat" style={{ backgroundColor: `#ededed` }}>
+              💺
+              </div>
+              <div className="train-cell seat" style={{ backgroundColor: `#ededed` }}>
+              💺
+              </div>
+            </div>
+            {/* Walking Path */}
+            <div className="train-row">
+              <div className="train-cell path" style={{ backgroundColor: `rgba(237, 237, 237, 0.5)`, opacity: 0.2 }}>
+                 walking coridoor
               </div>
             </div>
 
             {/* Row 2 */}
             <div className="train-row">
               <div className="train-cell ceil" style={{ backgroundColor: `rgba(255, 255, 0, ${lightingLevels.pwm2 / 255})` }}>
-                PWM2
+                PWM 2
               </div>
               <div className="train-cell seat" style={{ backgroundColor: `#ededed` }}>
-                Seat
+              💺
               </div>
-              <div className="train-cell seat" style={{ backgroundColor: `rgba(255, 165, 0, ${lightingLevels.pwm3 / 255})` }}>
-                PWM4
-              </div>
-              <div className="train-cell seat" style={{ backgroundColor: `#ededed` }}>
-                Seat
+              <div className="train-cell seat target" style={{ backgroundColor: `rgba(255, 165, 0, ${lightingLevels.pwm3 / 255})` }}>
+                PWM 4
               </div>
               <div className="train-cell seat" style={{ backgroundColor: `#ededed` }}>
-                Seat
+              💺
+              </div>
+              <div className="train-cell seat" style={{ backgroundColor: `#ededed` }}>
+              💺
+              </div>
+              <div className="train-cell seat" style={{ backgroundColor: `#ededed` }}>
+              💺
+              </div>
+              <div className="train-cell seat" style={{ backgroundColor: `#ededed` }}>
+              💺
               </div>
             </div>
           </div>

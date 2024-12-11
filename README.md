@@ -1,7 +1,8 @@
-
 # Train Lighting Simulator
 
 This project is developed as part of the OAMK DIN22SP group for the company **Teknoware** based in **Oulu, Finland**. The project aims to simulate industrial communication protocols (e.g., CIP, TRDP) for controlling lighting systems in trains.
+
+![Screenshot](ss.png)
 
 ## Purpose
 
