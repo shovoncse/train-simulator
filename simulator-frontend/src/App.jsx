@@ -1,49 +1,101 @@
-import React, { useState, useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import ProtocolSimulator from './components/ProtocolSimulator';
-import CIPConfig from './protocol-configs/CIP.json';
-import TRDPConfig from './protocol-configs/TRDP.json';
-import './index.css';
+import React, { useState } from 'react';
+import axios from 'axios';
+import './App.css';
 
 function App() {
-  const [protocol, setProtocol] = useState('');
-  const [config, setConfig] = useState(null);
+  const [clock, setClock] = useState('12:00');
+  const [scenario, setScenario] = useState('');
+  const [lightingLevels, setLightingLevels] = useState(null);
 
-  const configMap = {
-    CIP: CIPConfig,
-    TRDP: TRDPConfig,
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:5000/simulate', { clock, scenario });
+      setLightingLevels(response.data.lightingLevels);
+    } catch (error) {
+      console.error('Error fetching simulation data:', error);
+    }
   };
 
-  // Load JSON configuration based on selected protocol
-  useEffect(() => {
-    if (protocol) {
-      setConfig(configMap[protocol]);
-    }
-  }, [protocol]);
-  
   return (
-    <div className="container mt-4">
-      <h1 className="text-center">Train Lighting Simulator</h1>
-      <div className="mb-4">
-        <label htmlFor="protocolSelect">Select Protocol:</label>
-        <select
-          id="protocolSelect"
-          className="form-select"
-          value={protocol}
-          onChange={(e) => setProtocol(e.target.value)}
-        >
-          <option value="">-- Select Protocol --</option>
-          <option value="CIP">CIP</option>
-          <option value="TRDP">TRDP</option>
-        </select>
-      </div>
+    <div className="container">
+      <h1>Train Lighting Simulator</h1>
+      <form onSubmit={handleSubmit} className="mb-4">
+        <div className="mb-3">
+          <label htmlFor="clock">Clock</label>
+          <input
+            id="clock"
+            type="text"
+            className="form-control"
+            value={clock}
+            onChange={(e) => setClock(e.target.value)}
+            placeholder="Enter clock time (e.g., 12:00)"
+          />
+        </div>
 
-      {/* Render simulator if protocol is selected */}
-      {config ? (
-        <ProtocolSimulator protocol={protocol} config={config} />
-      ) : (
-        <p className="text-muted">Select a protocol to load its simulator.</p>
+        <div className="mb-3">
+          <label htmlFor="scenario">Select Scenario</label>
+          <select
+            id="scenario"
+            className="form-select"
+            value={scenario}
+            onChange={(e) => setScenario(e.target.value)}
+          >
+            <option value="">-- Select Scenario --</option>
+            <option value="first_class">First Class</option>
+            <option value="second_class">Second Class</option>
+            <option value="restaurant">Restaurant</option>
+          </select>
+        </div>
+
+        <button type="submit" className="btn btn-primary">Simulate</button>
+      </form>
+
+      {lightingLevels && (
+        <div className="simulation">
+          <h3>Simulation Result</h3>
+          <div className="train-body">
+            {/* Row 1 */}
+            <div className="train-row">
+              <div className="train-cell ceil" style={{ backgroundColor: `rgba(255, 255, 0, ${lightingLevels.pwm1 / 255})` }}>
+                Ceiling Left
+              </div>
+              <div className="train-cell seat" style={{ backgroundColor: `rgba(255, 165, 0, ${lightingLevels.pwm2 / 255})` }}>
+                Seat
+              </div>
+              <div className="train-cell seat" style={{ backgroundColor: `rgba(255, 165, 0, ${lightingLevels.pwm3 / 255})` }}>
+                Seat
+              </div>
+              <div className="train-cell seat target" style={{ backgroundColor: `rgba(255, 165, 0, ${lightingLevels.pwm4 / 255})` }}>
+                Seat (Target)
+              </div>
+              <div className="train-cell seat" style={{ backgroundColor: `rgba(255, 165, 0, ${lightingLevels.pwm2 / 255})` }}>
+                Seat
+              </div>
+            </div>
+
+            {/* Row 2 */}
+            <div className="train-row">
+              <div className="train-cell ceil" style={{ backgroundColor: `rgba(255, 255, 0, ${lightingLevels.pwm1 / 255})` }}>
+                Ceiling Right
+              </div>
+              <div className="train-cell seat" style={{ backgroundColor: `rgba(255, 165, 0, ${lightingLevels.pwm3 / 255})` }}>
+                Seat
+              </div>
+              <div className="train-cell seat target" style={{ backgroundColor: `rgba(255, 165, 0, ${lightingLevels.pwm4 / 255})` }}>
+                Seat (Target)
+              </div>
+              <div className="train-cell seat" style={{ backgroundColor: `rgba(255, 165, 0, ${lightingLevels.pwm2 / 255})` }}>
+                Seat
+              </div>
+              <div className="train-cell seat" style={{ backgroundColor: `rgba(255, 165, 0, ${lightingLevels.pwm3 / 255})` }}>
+                Seat
+              </div>
+            </div>
+          </div>
+        </div>
       )}
+
     </div>
   );
 }

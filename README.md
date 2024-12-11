@@ -26,6 +26,54 @@ The purpose of this project is to develop a web-based simulator that helps in te
 - **Backend**: Node.js, Express
 - **Protocols**: CIP, TRDP (as examples)
 
+## Raspberry Pi Setup for Remote Device (RD)
+
+The Raspberry Pi will serve as the **Remote Device (RD)** that receives lighting control commands from the Central Train Computer (CTC) and sends responses back.
+
+### **Raspberry Pi Hardware Requirements**
+- Raspberry Pi (any model with Ethernet port or Wi-Fi support)
+- Ethernet cable or Wi-Fi adapter
+- External LED strips (optional) for lighting demonstration
+- Power supply for Raspberry Pi
+
+### **Steps for Raspberry Pi Setup**
+
+1. **Install Raspberry Pi OS**
+   - Download and install [Raspberry Pi OS](https://www.raspberrypi.org/software/) on an SD card.
+   - Insert the SD card into the Raspberry Pi and boot it up.
+
+2. **Connect to Network**
+   - Connect the Raspberry Pi to the same network as your **CTC**.
+
+3. **Install Required Software**
+   - Install **Node.js** on the Raspberry Pi:
+     ```bash
+     sudo apt update
+     sudo apt install nodejs npm
+     ```
+
+4. **Clone Repository on Raspberry Pi**
+   - Clone the repository for the backend server:
+     ```bash
+     git clone <repository-url>
+     cd train-lighting-simulator/backend
+     ```
+
+5. **Configure Raspberry Pi for RD Role**
+   - Modify the **backend server** code to handle protocol-specific messages and simulate responses.
+   - Optionally, connect external LED strips to GPIO pins and control them with PWM.
+
+6. **Test Communication**
+   - Send protocol messages from the frontend and observe the responses from the Raspberry Pi.
+
+7. **Run the RD Backend Server**
+   - Start the backend server to listen for protocol messages:
+     ```bash
+     npm start
+     ```
+
+---
+
 ## Setup Instructions
 
 ### **Frontend**
@@ -71,4 +119,3 @@ The purpose of this project is to develop a web-based simulator that helps in te
 ## License
 
 This project is licensed under the MIT License.
-

@@ -1,49 +1,42 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
-
-// Import protocol handlers
-const CIP = require('./protocols/CIP');
-const TRDP = require('./protocols/TRDP');
-
 const app = express();
-const PORT = 5000;
+const fs = require('fs');
+const path = require('path');
 
-// Middleware
-app.use(bodyParser.json());
 app.use(cors());
+app.use(express.json());
 
-// Test endpoint
-app.get('/', (req, res) => {
-  res.send('Simulator API is running');
-});
+// Load configuration
+const configPath = path.join(__dirname, 'config.json');
+let config = {};
+try {
+  config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+} catch (error) {
+  console.error('Error loading config:', error);
+}
 
-// Simulate endpoint
+// Handle POST request for simulation
 app.post('/simulate', (req, res) => {
-  const { protocol, formData } = req.body;
+  const { clock, scenario } = req.body;
 
-  if (!protocol || !formData) {
-    return res.status(400).json({ error: 'Protocol and formData are required' });
+  // Validate input
+  if (!scenario || !config[scenario]) {
+    return res.status(400).json({ error: 'Invalid scenario selected' });
   }
 
-  let response;
+  // Retrieve scenario lighting levels
+  const scenarioConfig = config[scenario];
 
-  // Handle protocols dynamically
-  switch (protocol) {
-    case 'CIP':
-      response = CIP.handle(formData);
-      break;
-    case 'TRDP':
-      response = TRDP.handle(formData);
-      break;
-    default:
-      return res.status(400).json({ error: 'Unknown protocol' });
-  }
-
-  res.json(response);
+  // Response with lighting simulation data
+  res.json({
+    clock,
+    scenario,
+    lightingLevels: scenarioConfig
+  });
 });
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(5000, () => {
+  console.log('Backend running on http://localhost:5000');
 });
