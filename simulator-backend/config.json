@@ -11,7 +11,7 @@
     "pwm3": 60,
     "pwm4": 30
   },
-  "restaurant": {
+  "restaurant": { 
     "pwm1": 100,
     "pwm2": 200,
     "pwm3": 150,

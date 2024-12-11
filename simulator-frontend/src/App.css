@@ -9,7 +9,7 @@ body {
 
 /* Main container styling */
 .container {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 40px auto;
   padding: 20px;
   background-color: #ffffff;
@@ -22,18 +22,37 @@ body {
 h1 {
   font-size: 28px;
   color: #007bff;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
+}
+
+/* Wrapper layout */
+.wrapper {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 /* Form section styling */
 form {
-  margin-bottom: 30px;
+  width: 100%;
+  min-height: 280px;
+  max-width: 50%;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: left;
 }
 
 label {
   display: block;
   font-weight: bold;
   margin-bottom: 5px;
+}
+.form-header {
+  text-align: center;
 }
 
 .form-control,
@@ -44,6 +63,7 @@ label {
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
+  box-sizing: border-box;
 }
 
 .form-control:focus,
@@ -68,6 +88,60 @@ button {
 
 button:hover {
   background-color: #0056b3;
+}
+
+/* Config Section */
+.config-section {
+  width: 100%;
+  min-height: 280px;
+  max-width: 50%;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: left;
+}
+
+.config-header {
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.config-display {
+  height: 125px;
+  overflow-y: auto;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.config-display pre {
+  margin: 0;
+  font-family: monospace;
+  font-size: 14px;
+}
+
+.config-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.config-footer .btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.config-footer .btn:hover {
+  background-color: #218838;
 }
 
 /* Simulation result section */
@@ -123,23 +197,19 @@ button:hover {
   background-color: rgba(255, 165, 0, 0.8); /* Seat default color */
 }
 
-.train-cell.target {
-  border: 2px solid red; /* Highlight target seats */
-}
-
 /* Mobile responsiveness */
 @media (max-width: 600px) {
+  .wrapper {
+    flex-direction: column;
+  }
+
+  .form-section,
+  .config-section {
+    max-width: 100%;
+  }
+
   .train-body {
     max-width: 100%;
     padding: 15px;
-  }
-
-  .train-row {
-    flex-wrap: wrap;
-  }
-
-  .train-cell {
-    margin-bottom: 10px;
-    flex: 0 1 48%; /* Adjust for smaller screens */
   }
 }

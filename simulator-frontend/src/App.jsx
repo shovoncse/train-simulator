@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
@@ -6,6 +6,21 @@ function App() {
   const [clock, setClock] = useState('12:00');
   const [scenario, setScenario] = useState('');
   const [lightingLevels, setLightingLevels] = useState(null);
+  const [currentConfig, setCurrentConfig] = useState(null);
+
+  // Fetch config when a scenario is selected
+  useEffect(() => {
+    if (scenario) {
+      axios.get('http://localhost:5000/config')
+        .then((response) => {
+          setCurrentConfig(response.data[scenario] || null);
+        })
+        .catch((error) => {
+          console.error('Error fetching config:', error);
+          setCurrentConfig(null);
+        });
+    }
+  }, [scenario]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,41 +34,67 @@ function App() {
 
   return (
     <div className="container">
-      <h1>Train Lighting Simulator</h1>
-      <form onSubmit={handleSubmit} className="mb-4">
-        <div className="mb-3">
-          <label htmlFor="clock">Clock</label>
-          <input
-            id="clock"
-            type="text"
-            className="form-control"
-            value={clock}
-            onChange={(e) => setClock(e.target.value)}
-            placeholder="Enter clock time (e.g., 12:00)"
-          />
-        </div>
+      <h1>Teknoware Project</h1>
+      <div className="wrapper">
+        <form onSubmit={handleSubmit} className="form-section">
+          <div className="form-header">
+            <h3>CIP</h3>
+          </div>
+          <div className="form-group">
+            <label htmlFor="clock">Clock</label>
+            <input
+              id="clock"
+              type="text"
+              className="form-control"
+              value={clock}
+              onChange={(e) => setClock(e.target.value)}
+              placeholder="Enter clock time (e.g., 12:00)"
+            />
+          </div>
 
-        <div className="mb-3">
-          <label htmlFor="scenario">Select Scenario</label>
-          <select
-            id="scenario"
-            className="form-select"
-            value={scenario}
-            onChange={(e) => setScenario(e.target.value)}
-          >
-            <option value="">-- Select Scenario --</option>
-            <option value="first_class">First Class</option>
-            <option value="second_class">Second Class</option>
-            <option value="restaurant">Restaurant</option>
-          </select>
-        </div>
+          <div className="form-group">
+            <label htmlFor="scenario">Select Scenario</label>
+            <select
+              id="scenario"
+              className="form-select"
+              value={scenario}
+              onChange={(e) => setScenario(e.target.value)}
+            >
+              <option value="">-- Select Scenario --</option>
+              <option value="first_class">First Class</option>
+              <option value="second_class">Second Class</option>
+              <option value="restaurant">Restaurant</option>
+            </select>
+          </div>
 
-        <button type="submit" className="btn btn-primary">Simulate</button>
-      </form>
+          <button type="submit" className="btn btn-primary">Simulate</button>
+        </form>
+
+        <div className="config-section">
+          <div className="config-header">
+            <h3>Current Config.json</h3>
+          </div>
+          <div className="config-display">
+            {currentConfig ? (
+              <pre>{JSON.stringify(currentConfig, null, 2)}</pre>
+            ) : (
+              <p>No configuration available for the selected scenario.</p>
+            )}
+          </div>
+          <div className="config-footer">
+            <button
+              className="btn btn-secondary"
+              onClick={() => alert('Navigate to Edit Config Page')}
+            >
+              Edit Config
+            </button>
+          </div>
+        </div>
+      </div>
 
       {lightingLevels && (
         <div className="simulation">
-          <h3>Simulation Result</h3>
+          <h3>Train Simulation</h3>
           <div className="train-body">
             {/* Row 1 */}
             <div className="train-row">
@@ -76,7 +117,7 @@ function App() {
 
             {/* Row 2 */}
             <div className="train-row">
-            <div className="train-cell ceil" style={{ backgroundColor: `rgba(255, 255, 0, ${lightingLevels.pwm2 / 255})` }}>
+              <div className="train-cell ceil" style={{ backgroundColor: `rgba(255, 255, 0, ${lightingLevels.pwm2 / 255})` }}>
                 PWM2
               </div>
               <div className="train-cell seat" style={{ backgroundColor: `#ededed` }}>
@@ -95,7 +136,6 @@ function App() {
           </div>
         </div>
       )}
-
     </div>
   );
 }
