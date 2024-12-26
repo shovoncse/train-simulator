@@ -1,0 +1,62 @@
+{
+  "common": {
+    "ramp": 10,
+    "pwm_update_freq_Hz": 100,
+    "comment": "ramp in seconds switching from one scenario to another",
+    "editable": false
+  },
+  "timetable": {
+    "editable": true,
+    "first_class": {
+      "00:00": {pwm dictionary},
+      "07:00": {pwm dictionary},
+
+      "comment": "time in seconds"
+    },
+    "second_class": {
+      "start": 10,
+      "end": 20
+    },
+    "restaurant": {
+      "start": 20,
+      "end": 30
+    }
+  },
+  "first_class": {
+    "pwm1": 240,
+    "pwm2": 128,
+    "pwm3": 0,
+    "pwm4": 55
+  },
+  "second_class": {
+    "pwm1": 180,
+    "pwm2": 90,
+    "pwm3": 60,
+    "pwm4": 30
+  },
+  "restaurant": { 
+    "pwm1": 100,
+    "pwm2": 200,
+    "pwm3": 150,
+    "pwm4": 100
+  }
+}
+
+
+
+ramp: ramp time in seconds when switching from scenario a to b
+step_x_pwm = abs(pwm_x_val_b - pwm_x_val_a) / ramp
+step_x_pwm applied at pwm_update_freq_Hz frequency.
+
+ramping: Avoid abrupt/sudden lighting changes
+
+Clarify on RaspPi the pwm output voltage range.
+use a voltage meter after setting a pwm value on some output to check is the
+voltage corresponding to the percentage that was set via softare
+for example use set_pwm(int percentage) to set the pwm value for the OS driver.
+
+
+Assumption: white lights only are used, and fixed color temperature, 3000K
+--> next question how to show different color temperature for white on the UI.
+2500K is warm white --> white reddish/yellowish
+5000K is cold white --> white blueish

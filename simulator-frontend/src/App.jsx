@@ -8,10 +8,13 @@ function App() {
   const [lightingLevels, setLightingLevels] = useState(null);
   const [currentConfig, setCurrentConfig] = useState(null);
 
+  const apiUrl = 'http://localhost:5000';
+  //const apiUrl = 'http://192.168.56.192:5000';
+
   // Fetch config when a scenario is selected
   useEffect(() => {
     if (scenario) {
-      axios.get('http://localhost:5000/config')
+      axios.get(`${apiUrl}/config`)
         .then((response) => {
           setCurrentConfig(response.data[scenario] || null);
         })
@@ -25,7 +28,7 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/simulate', { clock, scenario });
+      const response = await axios.post(`${apiUrl}/simulate`, { clock, scenario });
       setLightingLevels(response.data.lightingLevels);
     } catch (error) {
       console.error('Error fetching simulation data:', error);
