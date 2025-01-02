@@ -144,6 +144,58 @@ button:hover {
   background-color: #218838;
 }
 
+/* Common Form and Timetable Styling */
+.common-timetable-wrapper {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.common-form,
+.timetable-form {
+  flex: 1;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.common-form h3,
+.timetable-form h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.common-form .form-group,
+.timetable-form .form-group {
+  margin-bottom: 15px;
+}
+
+.common-form label,
+.timetable-form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+input[type='range'] {
+  width: 100%;
+  margin-top: 5px;
+}
+
+.radio-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.radio-group label {
+  font-weight: normal;
+}
+
 /* Simulation result section */
 .simulation {
   margin-top: 20px;
@@ -221,5 +273,9 @@ button:hover {
   .train-body {
     max-width: 100%;
     padding: 15px;
+  }
+
+  .common-timetable-wrapper {
+    flex-direction: column;
   }
 }
