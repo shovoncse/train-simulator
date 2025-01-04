@@ -62,30 +62,14 @@ body {
 }
 
 
-/* Train Pc */
 .train-pc {
   grid-area: 1 / 1 / 2 / 2; 
   background-color: #fafafa;
   color: #404040;
   border-radius: 10px;
   padding: 40px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-
 }
 
-
-.controls {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-
-/* Common and Timetable Forms */
 .right-form-container {
   display: flex;
   justify-content: space-between;
@@ -98,21 +82,37 @@ body {
   background-color: #fafafa;
   padding: 40px;
   border-radius: 5px;
+  position: relative;
 }
 
-.pwm-grid {
+.pwm-sliders {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
 }
 
-.pwm-item {
+.radio-container {
   display: flex;
+  justify-content: space-between;
   flex-direction: column;
-  align-items: flex-start;
+  gap: 15px;
+  margin-top: 20px;
 }
 
-/* Hover states and apply buttons */
+.radio-container div {
+  display: flex;
+  align-items: center;
+  gap: 10px; 
+}
+
+.radio-container label {
+  display: flex;
+  align-items: center;
+  gap: 5px; 
+  font-size: 10px;
+  font-weight: 400;
+  color: #262626;
+}
+
 .train-pc:hover,
 .common-form:hover,
 .time-table-form:hover {
@@ -120,6 +120,81 @@ body {
               0 0 0 2px rgba(238, 51, 64, 0.5), 
               0 0 0 2px rgba(238, 51, 64, 0.3);
 }
+
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  padding-top: 20px;
+}
+
+.train-pc h4,
+.common-form h4,
+.time-table-form h4 {
+  width: 100%;
+  font-size: 16px;
+  border-bottom: 2px solid #171717;
+  color: #171717;
+}
+
+.train-pc,
+.common-form,
+.time-table-form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.train-pc label,
+.common-form label,
+.time-table-form label {
+  font-size: 14px;
+  margin-bottom: -6px;
+  font-weight: 400;
+  color: #262626;
+}
+
+.pwm-label {
+  text-transform: none;
+  font-size: 12px !important;
+}
+
+.pwm-value {
+  font-size: 10px;
+  margin-left: 2px;
+  color: #333;
+  font-weight: 500;
+  vertical-align: top;
+}
+
+.train-pc select,
+.common-form select,
+.time-table-form select {
+  width: 100%;
+  padding: 4px 40px 4px 8px; 
+  font-size: 12px;
+  font-weight: 400;
+  border: 2px solid #ccc;
+  border-radius: 100px;
+  color: #333;
+  cursor: pointer;
+  appearance: none;
+  background: url('/public/img/down-arrow.svg') no-repeat right 10px center;
+  background-size: 12px;
+}
+
+.train-pc select:hover,
+.common-form select:hover,
+.time-table-form select:hover {
+  border-color: #b00b0b;
+}
+
 
 .apply-btn {
   background-image: linear-gradient(to bottom right, rgb(238, 51, 64), #ef4444); /* Gradient from top to right bottom */
@@ -130,7 +205,6 @@ body {
   padding: 12px;
   font-size: 14px;
 }
-
 
 .apply-btn:hover {
   background-image: linear-gradient(to bottom right, #2563eb, #1e40af);

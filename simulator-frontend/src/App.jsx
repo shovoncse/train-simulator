@@ -170,7 +170,7 @@ function App() {
             <div className="train-pc">
               <h4>Train Pc</h4>
               <div className="controls">
-                <label htmlFor="clock">Select Clock:</label>
+                <label className='clock' htmlFor="clock">Select Clock:</label>
                 <select
                   id="clock"
                   value={selectedClock}
@@ -200,7 +200,8 @@ function App() {
               <div className="common-form">
                 <h4>Common Form</h4>
 
-                {/* Ramp Slider */}
+                <div className='controls'>
+                  {/* Ramp Slider */}
                 <label htmlFor="ramp">Ramp:</label>
                 <input
                   type="range"
@@ -223,6 +224,7 @@ function App() {
                 />
 
                 {/* Radio Buttons */}
+                  <div className='radio-container'>
                   <div>
                     <label>Edit Common:</label>
                     <label>
@@ -266,6 +268,8 @@ function App() {
                       No
                     </label>
                   </div>
+                  </div>
+                </div>
 
                 <button className='apply-btn' onClick={handleApplyTrainPc}>Apply</button>
               </div>
@@ -273,7 +277,8 @@ function App() {
           <div className="time-table-form">
             <h4>Timetable</h4>
 
-            {/* Select Scenario Dropdown */}
+            <div className='controls'>
+              {/* Select Scenario Dropdown */}
             <label htmlFor="timetableScenario">Select Scenario:</label>
             <select
               id="timetableScenario"
@@ -298,20 +303,26 @@ function App() {
               <option value="18:00">18:00</option>
             </select>
 
-            {/* PWM Sliders Timetable */}
-            {['pwm1', 'pwm2', 'pwm3', 'pwm4'].map((pwm, index) => (
-              <div key={index}>
-                <label htmlFor={`timetable-${pwm}`}>Timetable {pwm.toUpperCase()}:</label>
-                <input
-                  type="range"
-                  id={`timetable-${pwm}`}
-                  min="0"
-                  max="100"
-                  value={tempPwmValues.timetable[pwm]}
-                  onChange={(e) => handleTempTimetableChange(pwm, e.target.value)}
-                />
-              </div>
-            ))}
+            <div className='pwm-sliders'>
+              {/* PWM Sliders Timetable */}
+              {['pwm1', 'pwm2', 'pwm3', 'pwm4'].map((pwm, index) => (
+                <div key={index}>
+                  <label className='pwm-label' htmlFor={`timetable-${pwm}`}>
+                    {pwm.charAt(0).toUpperCase() + pwm.slice(1)}:
+                  </label>
+                  <input
+                    type="range"
+                    id={`timetable-${pwm}`}
+                    min="0"
+                    max="100"
+                    value={tempPwmValues.timetable[pwm]}
+                    onChange={(e) => handleTempTimetableChange(pwm, e.target.value)}
+                  />
+                  <span className='pwm-value'>{tempPwmValues.timetable[pwm]}</span>
+                </div>
+              ))}
+            </div>
+            </div>
             <button className='apply-btn' onClick={handleApplyTimetable}>Apply</button>
           </div>
         </div>
