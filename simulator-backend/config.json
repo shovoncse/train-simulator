@@ -11,10 +11,14 @@
     "pwm3": 60,
     "pwm4": 30
   },
-  "restaurant": { 
+  "restaurant": {
     "pwm1": 100,
     "pwm2": 200,
     "pwm3": 150,
     "pwm4": 100
+  },
+  "train_PC": {
+    "clocks": [1, 2, 3, 4],
+    "scenarios": [1, 2, 3, "1st Class", "2nd Class"]
   }
 }

@@ -16,6 +16,47 @@ try {
   console.error('Error loading config:', error);
 }
 
+// Handle GET request for simulation
+app.get("/simulate", (req, res) => {
+  const { clock, scenario } = req.query;
+   console.log("Received clock:", clock);
+   console.log("Received scenario:", scenario);
+
+  // Validate clock
+  if (
+    !clock ||
+    isNaN(clock) ||
+    !config.train_PC.clocks.includes(Number(clock))
+  ) {
+    return res.status(400).json({ error: "Invalid clock selected" });
+  }
+
+  // Map scenario names to keys in config.json
+  const scenarioMapping = {
+    "1st Class": "first_class",
+    "2nd Class": "second_class",
+    Restaurant: "restaurant",
+  };
+
+  const mappedScenario = scenarioMapping[scenario] || scenario;
+  if (!mappedScenario || !config[mappedScenario]) {
+    return res.status(400).json({ error: "Invalid scenario selected" });
+  }
+
+  // Retrieve lighting levels
+ try {
+   const scenarioConfig = config[mappedScenario];
+   res.json({
+     clock,
+     scenario,
+     lightingLevels: scenarioConfig,
+   });
+ } catch (error) {
+   console.error("Error in /simulate:", error);
+   res.status(500).json({ error: "An internal server error occurred" });
+ }
+});
+
 // Handle POST request for simulation
 app.post('/simulate', (req, res) => {
   const { clock, scenario } = req.body;

@@ -241,3 +241,15 @@ body {
 .scenario {
   color: rgb(238, 51, 64);
 }
+
+.api-data-display {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.api-data-display h4 {
+  margin-bottom: 10px;
+}
