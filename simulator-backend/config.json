@@ -1,20 +1,38 @@
 {
-  "first_class": {
-    "pwm1": 240,
-    "pwm2": 128,
-    "pwm3": 0,
-    "pwm4": 55
+  "common": {
+    "ramp": 15,
+    "pwm_update_freq_Hz": 200,
+    "editable": false
   },
-  "second_class": {
-    "pwm1": 180,
-    "pwm2": 90,
-    "pwm3": 60,
-    "pwm4": 30
-  },
-  "restaurant": { 
-    "pwm1": 100,
-    "pwm2": 200,
-    "pwm3": 150,
-    "pwm4": 100
+  "timetable": {
+    "editable": true,
+    "first_class": {
+      "06:00": {
+        "pwm1": 50,
+        "pwm2": 30,
+        "pwm3": 10,
+        "pwm4": 60
+      },
+      "18:00": {
+        "pwm1": 70,
+        "pwm2": 50,
+        "pwm3": 20,
+        "pwm4": 80
+      }
+    },
+    "restaurant": {
+      "12:00": {
+        "pwm1": 100,
+        "pwm2": 70,
+        "pwm3": 50,
+        "pwm4": 90
+      },
+      "20:00": {
+        "pwm1": 120,
+        "pwm2": 80,
+        "pwm3": 60,
+        "pwm4": 100
+      }
+    }
   }
 }
