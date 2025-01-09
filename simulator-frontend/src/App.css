@@ -9,7 +9,7 @@ body {
   align-items: flex-end;
   padding-bottom: 1%;
   overflow: hidden;
-  background-image: url('../public/img/bg4.jpg');
+  /*background-image: url('../public/img/bg4.jpg');*/
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
