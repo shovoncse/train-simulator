@@ -1,24 +1,88 @@
 {
-  "first_class": {
-    "pwm1": 240,
-    "pwm2": 128,
-    "pwm3": 0,
-    "pwm4": 55
+  "common": {
+    "ramp": 15,
+    "pwm_update_freq_Hz": 200,
+    "editable": false
   },
-  "second_class": {
-    "pwm1": 180,
-    "pwm2": 90,
-    "pwm3": 60,
-    "pwm4": 30
-  },
-  "restaurant": {
-    "pwm1": 100,
-    "pwm2": 200,
-    "pwm3": 150,
-    "pwm4": 100
-  },
-  "train_PC": {
-    "clocks": [1, 2, 3, 4],
-    "scenarios": [1, 2, 3, "1st Class", "2nd Class"]
+  "timetable": {
+    "editable": true,
+    "first_class": {
+      "06:00": {
+        "pwm1": 50,
+        "pwm2": 30,
+        "pwm3": 10,
+        "pwm4": 60
+      },
+      "12:00": {
+        "pwm1": 60,
+        "pwm2": 40,
+        "pwm3": 20,
+        "pwm4": 70
+      },
+      "18:00": {
+        "pwm1": 70,
+        "pwm2": 50,
+        "pwm3": 20,
+        "pwm4": 80
+      },
+      "00:00": {
+        "pwm1": 60,
+        "pwm2": 40,
+        "pwm3": 20,
+        "pwm4": 70
+      }
+    },
+    "second_class": {
+      "06:00": {
+        "pwm1": 60,
+        "pwm2": 40,
+        "pwm3": 20,
+        "pwm4": 70
+      },
+      "12:00": {
+        "pwm1": 70,
+        "pwm2": 50,
+        "pwm3": 20,
+        "pwm4": 80
+      },
+      "18:00": {
+        "pwm1": 80,
+        "pwm2": 60,
+        "pwm3": 30,
+        "pwm4": 90
+      },
+      "00:00": {
+        "pwm1": 70,
+        "pwm2": 50,
+        "pwm3": 20,
+        "pwm4": 80
+      }
+    },
+    "restaurant": {
+      "06:00": {
+        "pwm1": 70,
+        "pwm2": 50,
+        "pwm3": 20,
+        "pwm4": 80
+      },
+      "12:00": {
+        "pwm1": 80,
+        "pwm2": 60,
+        "pwm3": 30,
+        "pwm4": 90
+      },
+      "18:00": {
+        "pwm1": 90,
+        "pwm2": 70,
+        "pwm3": 40,
+        "pwm4": 100
+      },
+      "00:00": {
+        "pwm1": 80,
+        "pwm2": 60,
+        "pwm3": 30,
+        "pwm4": 90
+      }
+    }
   }
 }
