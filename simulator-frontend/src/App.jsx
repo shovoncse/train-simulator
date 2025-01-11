@@ -9,7 +9,6 @@ const App = () => {
   const [pwmValues, setPwmValues] = useState({});
   const [message, setMessage] = useState("");
 
-  // New form state
   const [newTime, setNewTime] = useState("");
   const [newScenario, setNewScenario] = useState("");
   const [rampValue, setRampValue] = useState("");
@@ -20,25 +19,34 @@ const App = () => {
     pwm3: "",
     pwm4: "",
   });
+  const [editable, setEditable] = useState(true);
   const [updateMessage, setUpdateMessage] = useState("");
-  const [showPopup, setShowPopup] = useState(false);
 
-  // Popup content
-  const [popupContent, setPopupContent] = useState("");
+  const [colorSimulation, setColorSimulation] = useState({
+    red: 0,
+    green: 0,
+    blue: 0,
+  });
 
-  // Fetch timetable from the backend on component load
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/config")
-      .then((response) => {
-        setTimetable(response.data.timetable);
-      })
-      .catch((error) => {
-        console.error("Error fetching timetable:", error);
-      });
-  }, []);
+ useEffect(() => {
+   axios
+     .get("http://localhost:5000/config")
+     .then((response) => {
+       const data = response.data;
 
-  // Handle Apply Button Click
+       if (data && data.common) {
+         setRampValue(data.common.ramp || ""); // Set ramp value
+         setFrequencyHz(data.common.pwm_update_freq_Hz || ""); // Set frequency value
+       }
+
+       setTimetable(data.timetable); // Set timetable
+     })
+     .catch((error) => {
+       console.error("Error fetching configuration:", error);
+     });
+ }, []);
+
+
   const handleApply = () => {
     if (!selectedClass || !selectedTime) {
       setMessage("Please select a class and time.");
@@ -52,79 +60,81 @@ const App = () => {
     ) {
       const pwm = timetable[selectedClass][selectedTime];
       setPwmValues(pwm);
-      setMessage("PWM values successfully updated!");
+      setNewPwmValues({
+        pwm1: pwm.pwm1 || "",
+        pwm2: pwm.pwm2 || "",
+        pwm3: pwm.pwm3 || "",
+        pwm4: pwm.pwm4 || "",
+      });
+      setMessage("");
     } else {
       setMessage("Invalid class or time selected.");
     }
   };
+const handleUpdate = () => {
+  // Validate ramp and frequency values
+  const rampNum = parseFloat(rampValue);
+  const frequencyNum = parseFloat(frequencyHz);
 
-  // Handle Update Button Click
-  const handleUpdate = () => {
-    if (!newTime || !newScenario || !rampValue === "" || !frequencyHz === "") {
-      setUpdateMessage("Please fill in all fields.");
-      return;
-    }
-    
-  if (
-    rampValue < 0 ||
-    rampValue > 290 ||
-    frequencyHz < 0 ||
-    frequencyHz > 290
-  ) {
-    setUpdateMessage("Ramp and Frequency values must be between 0 and 290.");
+  if (isNaN(rampNum) || rampNum < 1 || rampNum > 100) {
+    alert("Please fill the Ramp value between 1 and 100.");
     return;
   }
-    if (
-      Object.values(newPwmValues).some(
-        (val) => isNaN(val) || val < 1 || val > 255
-      )
-    ) {
-      setUpdateMessage("PWM values must be between 1 and 255.");
+
+  if (isNaN(frequencyNum) || frequencyNum < 1 || frequencyNum > 100) {
+    alert("Please fill the Frequency value between 1 and 100.");
+    return;
+  }
+
+  // Validate new PWM values, ensuring they're a number between 1 and 100 for non-empty fields
+  const pwmValuesPercent = {
+    pwm1: parseFloat(newPwmValues.pwm1) || null,
+    pwm2: parseFloat(newPwmValues.pwm2) || null,
+    pwm3: parseFloat(newPwmValues.pwm3) || null,
+    pwm4: parseFloat(newPwmValues.pwm4) || null,
+  };
+
+  // Validate PWM values to ensure they're between 1 and 100
+  for (const key in pwmValuesPercent) {
+    const value = pwmValuesPercent[key];
+    if (value !== null && (value < 1 || value > 100)) {
+      alert(
+        `Invalid PWM value for ${key}. Please enter a value between 1 and 100.`
+      );
       return;
     }
+  }
 
-    const updatedConfig = {
-      common: {
-        ramp: parseFloat(rampValue),
-        pwm_update_freq_Hz: parseFloat(frequencyHz),
-        editable: true,
+  const updatedConfig = {
+    common: {
+      ramp: rampNum, // Use the validated ramp value
+      pwm_update_freq_Hz: frequencyNum, // Use the validated frequency value
+      editable,
+    },
+    timetable: {
+      ...timetable,
+      [newScenario]: {
+        ...(timetable ? timetable[newScenario] : {}),
+        [newTime]: pwmValuesPercent, // PWM values object
       },
-      timetable: {
-        ...timetable,
-        [newScenario]: {
-          ...(timetable ? timetable[newScenario] : {}),
-          [newTime]: {
-            pwm1: parseInt(newPwmValues.pwm1, 10),
-            pwm2: parseInt(newPwmValues.pwm2, 10),
-            pwm3: parseInt(newPwmValues.pwm3, 10),
-            pwm4: parseInt(newPwmValues.pwm4, 10),
-          },
-        },
-      },
-    };
+    },
+  };
 
-    axios
-      .post("http://localhost:5000/config", { updatedConfig })
-      .then((response) => {
-        setUpdateMessage("Configuration updated successfully!");
-        setTimetable(response.data.config.timetable); // Update local timetable
-        setPwmValues({
-          pwm1: parseInt(newPwmValues.pwm1, 10),
-          pwm2: parseInt(newPwmValues.pwm2, 10),
-          pwm3: parseInt(newPwmValues.pwm3, 10),
-          pwm4: parseInt(newPwmValues.pwm4, 10),
-        });
+  axios
+    .post("http://localhost:5000/config", { updatedConfig })
+    .then((response) => {
+      setUpdateMessage("Configuration updated successfully!");
+      setTimetable(response.data.config.timetable);
+      setPwmValues(pwmValuesPercent); // Update PWM values state
+    })
+    .catch((error) => {
+      console.error("Error updating configuration:", error);
+      setUpdateMessage("Failed to update configuration.");
+    });
+};
 
-        // Set popup content and show it
-        setPopupContent(
-          `Configuration Updated:\nTime: ${newTime}\nScenario: ${newScenario}\nRamp: ${rampValue}\nFrequency (Hz): ${frequencyHz}\nPWM1: ${newPwmValues.pwm1}\nPWM2: ${newPwmValues.pwm2}\nPWM3: ${newPwmValues.pwm3}\nPWM4: ${newPwmValues.pwm4}`
-        );
-        setShowPopup(true);
-      })
-      .catch((error) => {
-        console.error("Error updating configuration:", error);
-        setUpdateMessage("Failed to update configuration.");
-      });
+  const handleColorSimulation = () => {
+    console.log("Simulated Color:", colorSimulation);
   };
 
   return (
@@ -132,7 +142,6 @@ const App = () => {
       <div className="form-group">
         <h1>Train PC</h1>
 
-        {/* Select Class */}
         <div>
           <label>Select Class:</label>
           <select
@@ -141,15 +150,16 @@ const App = () => {
           >
             <option value="">--Choose Class--</option>
             {timetable &&
-              Object.keys(timetable).map((className) => (
-                <option key={className} value={className}>
-                  {className}
-                </option>
-              ))}
+              Object.keys(timetable)
+                .filter((className) => className !== "editable")
+                .map((className) => (
+                  <option key={className} value={className}>
+                    {className}
+                  </option>
+                ))}
           </select>
         </div>
 
-        {/* Select Time */}
         <div>
           <label>Select Time:</label>
           <select
@@ -167,46 +177,39 @@ const App = () => {
           </select>
         </div>
 
-        {/* Apply Button */}
         <div>
           <button onClick={handleApply} style={{ marginTop: "10px" }}>
             Apply
           </button>
         </div>
 
-        {/* Display Message */}
         {message && <p style={{ color: "green" }}>{message}</p>}
 
-        {/* Display PWM Values */}
         {pwmValues && Object.keys(pwmValues).length > 0 && (
           <div style={{ marginTop: "20px" }}>
             <h2>PWM Values</h2>
-            <p>PWM1: {pwmValues.pwm1}</p>
-            <p>PWM2: {pwmValues.pwm2}</p>
-            <p>PWM3: {pwmValues.pwm3}</p>
-            <p>PWM4: {pwmValues.pwm4}</p>
+            <p>PWM1: {pwmValues.pwm1}%</p>
+            <p>PWM2: {pwmValues.pwm2}%</p>
+            <p>PWM3: {pwmValues.pwm3}%</p>
+            <p>PWM4: {pwmValues.pwm4}%</p>
           </div>
         )}
       </div>
 
-      {/* New Update Form */}
       <div className="form-group" style={{ marginTop: "40px" }}>
         <h1>Update Configuration</h1>
 
-        {/* Time Dropdown */}
         <div>
           <label>Time:</label>
           <select value={newTime} onChange={(e) => setNewTime(e.target.value)}>
             <option value="">--Choose Time--</option>
             <option value="12:00">12:00</option>
             <option value="18:00">18:00</option>
-            <option value="22:00">06:00</option>
-            <option value="02:00">00:00</option>
-            {/* Add more options as needed */}
+            <option value="22:00">22:00</option>
+            <option value="02:00">02:00</option>
           </select>
         </div>
 
-        {/* Scenario Dropdown */}
         <div>
           <label>Scenario:</label>
           <select
@@ -214,46 +217,42 @@ const App = () => {
             onChange={(e) => setNewScenario(e.target.value)}
           >
             <option value="">--Choose Scenario--</option>
-            <option value="first_class">first class</option>
+            <option value="first_class">First Class</option>
             <option value="second_class">Second Class</option>
-            <option value="third_class">resturant</option>
-            {/* Add more options as needed */}
+            <option value="third_class">Restaurant</option>
           </select>
         </div>
 
-        {/* Ramp Value */}
         <div>
           <label>Ramp:</label>
           <input
             type="number"
             min="0"
-            max="290"
+            max="100"
             value={rampValue}
             onChange={(e) => setRampValue(e.target.value)}
             placeholder="Enter Ramp Value"
           />
         </div>
 
-        {/* Frequency */}
         <div>
           <label>Frequency (Hz):</label>
           <input
             type="number"
             min="0"
-            max="290"
+            max="100"
             value={frequencyHz}
             onChange={(e) => setFrequencyHz(e.target.value)}
             placeholder="Enter Frequency (Hz)"
           />
         </div>
 
-        {/* PWM Values */}
         <div>
           <label>PWM1:</label>
           <input
             type="number"
-            min="1"
-            max="255"
+            min="0"
+            max="100"
             value={newPwmValues.pwm1}
             onChange={(e) =>
               setNewPwmValues({ ...newPwmValues, pwm1: e.target.value })
@@ -263,7 +262,7 @@ const App = () => {
           <input
             type="number"
             min="1"
-            max="255"
+            max="100"
             value={newPwmValues.pwm2}
             onChange={(e) =>
               setNewPwmValues({ ...newPwmValues, pwm2: e.target.value })
@@ -273,7 +272,7 @@ const App = () => {
           <input
             type="number"
             min="1"
-            max="255"
+            max="100"
             value={newPwmValues.pwm3}
             onChange={(e) =>
               setNewPwmValues({ ...newPwmValues, pwm3: e.target.value })
@@ -283,7 +282,7 @@ const App = () => {
           <input
             type="number"
             min="1"
-            max="255"
+            max="100"
             value={newPwmValues.pwm4}
             onChange={(e) =>
               setNewPwmValues({ ...newPwmValues, pwm4: e.target.value })
@@ -291,27 +290,90 @@ const App = () => {
           />
         </div>
 
-        {/* Update Button */}
+        <div>
+          <label>Editable:</label>
+          <label>
+            <input
+              type="radio"
+              name="editable"
+              value={true}
+              checked={editable === true}
+              onChange={() => setEditable(true)}
+            />
+            True
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="editable"
+              value={false}
+              checked={editable === false}
+              onChange={() => setEditable(false)}
+            />
+            False
+          </label>
+        </div>
+
         <div>
           <button onClick={handleUpdate} style={{ marginTop: "10px" }}>
             Update
           </button>
         </div>
 
-        {/* Update Message */}
         {updateMessage && <p style={{ color: "green" }}>{updateMessage}</p>}
       </div>
 
-      {/* Popup Modal */}
-      {showPopup && (
-        <div className="popup-overlay">
-          <div className="popup-content">
-            <h2>Update Successful</h2>
-            <pre>{popupContent}</pre>
-            <button onClick={() => setShowPopup(false)}>Close</button>
-          </div>
+      <div className="form-group" style={{ marginTop: "40px" }}>
+        <h1>Color Simulation</h1>
+
+        <div>
+          <label>Red:</label>
+          <input
+            type="number"
+            min="0"
+            max="255"
+            value={colorSimulation.red}
+            onChange={(e) =>
+              setColorSimulation({ ...colorSimulation, red: e.target.value })
+            }
+          />
         </div>
-      )}
+
+        <div>
+          <label>Green:</label>
+          <input
+            type="number"
+            min="0"
+            max="255"
+            value={colorSimulation.green}
+            onChange={(e) =>
+              setColorSimulation({ ...colorSimulation, green: e.target.value })
+            }
+          />
+        </div>
+
+        <div>
+          <label>Blue:</label>
+          <input
+            type="number"
+            min="0"
+            max="255"
+            value={colorSimulation.blue}
+            onChange={(e) =>
+              setColorSimulation({ ...colorSimulation, blue: e.target.value })
+            }
+          />
+        </div>
+
+        <div>
+          <button
+            onClick={handleColorSimulation}
+            style={{ marginTop: "10px", background: "lightgray" }}
+          >
+            Simulate Color
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
