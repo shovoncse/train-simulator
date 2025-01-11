@@ -28,6 +28,7 @@ const App = () => {
     pwm4: "",
   });
   const [editable, setEditable] = useState(true);
+  const [editStatus, setEditStatus] = useState(true);
   const [updateMessage, setUpdateMessage] = useState("");
 
   // -----------------------------
@@ -132,6 +133,12 @@ const App = () => {
       setMessage("");
       setSelectedClassForColorSinulation(selectedClass);
       setSelectedTimeForColorSimulation(selectedTime);
+
+      if (editable === false) {
+        setEditStatus(false);
+      }else{
+        setEditStatus(true);
+      }
     } else {
       setMessage("Invalid class or time selected.");
     }
@@ -175,7 +182,6 @@ const App = () => {
       common: {
         ramp: rampNum,
         pwm_update_freq_Hz: freqNum,
-        editable,
       },
       timetable: {
         ...timetable,
@@ -253,7 +259,30 @@ const App = () => {
               ))}
           </select>
         </div>
-
+        {/* EDITABLE */}
+        <div>
+          <label>Editable:</label>
+          <label>
+            <input
+              type="radio"
+              name="editable"
+              value="true"
+              checked={editable === true}
+              onChange={() => setEditable(true)}
+            />
+            True
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="editable"
+              value="false"
+              checked={editable === false}
+              onChange={() => setEditable(false)}
+            />
+            False
+          </label>
+        </div>
         <div>
           <button onClick={handleApply} style={{ marginTop: "10px" }}>
             Apply
@@ -364,34 +393,9 @@ const App = () => {
           />
         </div>
 
-        {/* EDITABLE */}
-        <div>
-          <label>Editable:</label>
-          <label>
-            <input
-              type="radio"
-              name="editable"
-              value="true"
-              checked={editable === true}
-              onChange={() => setEditable(true)}
-            />
-            True
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="editable"
-              value="false"
-              checked={editable === false}
-              onChange={() => setEditable(false)}
-            />
-            False
-          </label>
-        </div>
-
         {/* UPDATE BUTTON */}
         <div>
-          <button onClick={handleUpdate} style={{ marginTop: "10px" }}>
+          <button onClick={handleUpdate} style={{ marginTop: "10px" }} disabled={!editStatus}>
             Update
           </button>
         </div>
@@ -404,7 +408,7 @@ const App = () => {
           ---------------------------------- */}
       <div className="form-group" style={{ marginTop: "40px" }}>
         <h1>
-          {selectedClassForColorSinulation } - {selectedTimeForColorSimulation }
+          {selectedClassForColorSinulation} - {selectedTimeForColorSimulation}
         </h1>
         {pwmValues && Object.keys(pwmValues).length > 0 && (
           <div style={{ marginTop: "20px" }}>
