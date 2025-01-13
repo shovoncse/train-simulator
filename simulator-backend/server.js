@@ -80,6 +80,6 @@ app.post('/config', (req, res) => {
 });
 
 // Start server
-app.listen(5000, () => {
-  console.log('Backend running on http://localhost:5000');
+app.listen(5001, () => {
+  console.log('Backend running on http://localhost:5001');
 });
