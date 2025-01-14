@@ -1,7 +1,7 @@
 {
   "common": {
-    "ramp": 56,
-    "pwm_update_freq_Hz": 66,
+    "ramp": 60,
+    "pwm_update_freq_Hz": 69,
     "editable": true
   },
   "timetable": {

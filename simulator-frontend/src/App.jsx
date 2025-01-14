@@ -56,6 +56,11 @@ const App = () => {
       setMessage("Please select a class and time.");
       return;
     }
+    /* editable false alert popup*/
+    if(editable === false) {
+      alert("Train_PC fields are not editable.");
+      return;
+    }
   
     if (timetable[selectedClass] && timetable[selectedClass][selectedTime]) {
       const pwm = timetable[selectedClass][selectedTime];
@@ -206,12 +211,14 @@ const App = () => {
     axios
       .post("http://localhost:5001/config", { updatedConfig })
       .then((response) => {
-        setUpdateMessage("Configuration updated successfully!");
+        setUpdateMessage("");
+        alert("Configuration updated successfully.");
         setTimetable(response.data.config.timetable);
       })
       .catch((error) => {
         console.error("Error updating configuration:", error);
-        setUpdateMessage("Failed to update configuration.");
+        setUpdateMessage("");
+        alert("Error updating configuration. Please try again.");
       });
   };
 
