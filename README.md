@@ -24,7 +24,7 @@ The purpose of this project is to develop a web-based simulator that helps in te
 
 - **Hakan Asmaoglu**
 
--- **Rachna Kumar**
+- **Rachna Kumar**
 
 
 ## Technologies Used
