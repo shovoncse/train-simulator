@@ -3,6 +3,9 @@
 This project is developed as part of the OAMK DIN22SP group for the company **Teknoware** based in **Oulu, Finland**. The project aims to simulate industrial communication protocols (e.g., CIP, TRDP) for controlling lighting systems in trains.
 
 ![Screenshot](ss.png)
+![V2-Screenshot-Form](image-1.png)
+![V2-Screenshot-Seat](image-2.png)
+
 
 ## Purpose
 
@@ -17,9 +20,12 @@ The purpose of this project is to develop a web-based simulator that helps in te
 
 ## Author
 
-- **Shovan Das**  
-  Third-year IT student at OAMK, Finland  
-  Project for **Teknoware**, Oulu, Finland
+- **Shovan Das**    
+
+- **Hakan Asmaoglu**
+
+-- **Rachna Kumar**
+
 
 ## Technologies Used
 
